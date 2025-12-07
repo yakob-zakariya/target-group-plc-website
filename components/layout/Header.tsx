@@ -3,12 +3,55 @@
 import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
-import { useState, useEffect } from "react";
+import {
+  useState,
+  useEffect,
+  useRef,
+} from "react";
 import {
   Menu,
   X,
   ChevronDown,
+  Building2,
+  Factory,
+  Ship,
+  GraduationCap,
+  Monitor,
+  ArrowRight,
 } from "lucide-react";
+
+const serviceItems = [
+  {
+    name: "Construction Materials",
+    href: "/services/construction-materials",
+    icon: Building2,
+    description: "Premium building materials",
+  },
+  {
+    name: "Agro Industry",
+    href: "/services/agro-industry",
+    icon: Factory,
+    description: "Agricultural processing",
+  },
+  {
+    name: "Import & Export",
+    href: "/services/import-export",
+    icon: Ship,
+    description: "Global trade solutions",
+  },
+  {
+    name: "Education",
+    href: "/services/education",
+    icon: GraduationCap,
+    description: "Learning & development",
+  },
+  {
+    name: "IT Services",
+    href: "/services/it-services",
+    icon: Monitor,
+    description: "Digital solutions",
+  },
+];
 
 const navigation = [
   { name: "Home", href: "/" },
@@ -16,28 +59,7 @@ const navigation = [
   {
     name: "Services",
     href: "/services",
-    children: [
-      {
-        name: "Construction Materials",
-        href: "/services/construction-materials",
-      },
-      {
-        name: "Agro Industry",
-        href: "/services/agro-industry",
-      },
-      {
-        name: "Import & Export",
-        href: "/services/import-export",
-      },
-      {
-        name: "Education",
-        href: "/services/education",
-      },
-      {
-        name: "IT Services",
-        href: "/services/it-services",
-      },
-    ],
+    hasDropdown: true,
   },
   { name: "Contact", href: "/contact" },
 ];
@@ -48,13 +70,32 @@ export default function Header() {
     useState(false);
   const [servicesOpen, setServicesOpen] =
     useState(false);
+  const [
+    mobileServicesOpen,
+    setMobileServicesOpen,
+  ] = useState(false);
   const [isScrolled, setIsScrolled] =
     useState(false);
+  const dropdownTimeout =
+    useRef<NodeJS.Timeout | null>(null);
 
   // Check if a nav item is active
   const isActive = (href: string) => {
     if (href === "/") return pathname === "/";
     return pathname.startsWith(href);
+  };
+
+  const handleMouseEnter = () => {
+    if (dropdownTimeout.current) {
+      clearTimeout(dropdownTimeout.current);
+    }
+    setServicesOpen(true);
+  };
+
+  const handleMouseLeave = () => {
+    dropdownTimeout.current = setTimeout(() => {
+      setServicesOpen(false);
+    }, 150); // Small delay to prevent accidental closing
   };
 
   useEffect(() => {
@@ -104,19 +145,14 @@ export default function Header() {
           {/* Desktop Navigation */}
           <div className="hidden lg:flex lg:items-center lg:gap-8">
             {navigation.map((item) =>
-              item.children ? (
+              item.hasDropdown ? (
                 <div
                   key={item.name}
                   className="relative"
-                  onMouseEnter={() =>
-                    setServicesOpen(true)
-                  }
-                  onMouseLeave={() =>
-                    setServicesOpen(false)
-                  }
+                  onMouseEnter={handleMouseEnter}
+                  onMouseLeave={handleMouseLeave}
                 >
-                  <Link
-                    href={item.href}
+                  <button
                     className={`flex items-center gap-1 text-base font-semibold transition-colors py-2 ${
                       isActive(item.href)
                         ? isScrolled
@@ -128,27 +164,83 @@ export default function Header() {
                     }`}
                   >
                     {item.name}
-                    <ChevronDown className="h-4 w-4" />
-                  </Link>
-                  {servicesOpen && (
-                    <div className="absolute top-full left-0 w-56 bg-white rounded-lg shadow-lg border border-gray-100 py-2 mt-1">
-                      {item.children.map(
-                        (child) => (
-                          <Link
-                            key={child.name}
-                            href={child.href}
-                            className={`block px-4 py-2.5 text-sm font-medium transition-colors ${
-                              isActive(child.href)
-                                ? "bg-primary-50 text-primary-600"
-                                : "text-gray-700 hover:bg-primary-50 hover:text-primary-600"
-                            }`}
-                          >
-                            {child.name}
-                          </Link>
-                        )
-                      )}
+                    <ChevronDown
+                      className={`h-4 w-4 transition-transform duration-200 ${
+                        servicesOpen
+                          ? "rotate-180"
+                          : ""
+                      }`}
+                    />
+                  </button>
+                  {/* Dropdown with improved UX */}
+                  <div
+                    className={`absolute top-full left-1/2 -translate-x-1/2 pt-3 transition-all duration-200 ${
+                      servicesOpen
+                        ? "opacity-100 visible translate-y-0"
+                        : "opacity-0 invisible -translate-y-2"
+                    }`}
+                  >
+                    <div className="w-80 bg-white rounded-xl shadow-xl border border-gray-100 overflow-hidden">
+                      {/* View All Services Link */}
+                      <Link
+                        href="/services"
+                        className="flex items-center justify-between px-5 py-3 bg-primary-50 border-b border-gray-100 hover:bg-primary-100 transition-colors group"
+                      >
+                        <span className="text-sm font-semibold text-primary-700">
+                          View All Services
+                        </span>
+                        <ArrowRight className="h-4 w-4 text-primary-600 group-hover:translate-x-1 transition-transform" />
+                      </Link>
+                      {/* Service Items */}
+                      <div className="py-2">
+                        {serviceItems.map(
+                          (service) => (
+                            <Link
+                              key={service.name}
+                              href={service.href}
+                              className={`flex items-center gap-3 px-5 py-3 transition-colors ${
+                                isActive(
+                                  service.href
+                                )
+                                  ? "bg-primary-50"
+                                  : "hover:bg-gray-50"
+                              }`}
+                            >
+                              <div
+                                className={`h-10 w-10 rounded-lg flex items-center justify-center shrink-0 ${
+                                  isActive(
+                                    service.href
+                                  )
+                                    ? "bg-primary-600 text-white"
+                                    : "bg-gray-100 text-gray-600"
+                                }`}
+                              >
+                                <service.icon className="h-5 w-5" />
+                              </div>
+                              <div>
+                                <p
+                                  className={`text-sm font-semibold ${
+                                    isActive(
+                                      service.href
+                                    )
+                                      ? "text-primary-600"
+                                      : "text-gray-800"
+                                  }`}
+                                >
+                                  {service.name}
+                                </p>
+                                <p className="text-xs text-gray-500">
+                                  {
+                                    service.description
+                                  }
+                                </p>
+                              </div>
+                            </Link>
+                          )
+                        )}
+                      </div>
                     </div>
-                  )}
+                  </div>
                 </div>
               ) : (
                 <Link
@@ -206,42 +298,94 @@ export default function Header() {
             <div className="px-4 py-4 space-y-1">
               {navigation.map((item) => (
                 <div key={item.name}>
-                  <Link
-                    href={item.href}
-                    className={`block py-3 text-base font-semibold ${
-                      isActive(item.href)
-                        ? "text-primary-600"
-                        : "text-gray-800 hover:text-primary-600"
-                    }`}
-                    onClick={() =>
-                      setMobileMenuOpen(false)
-                    }
-                  >
-                    {item.name}
-                  </Link>
-                  {item.children && (
-                    <div className="pl-4 space-y-1 border-l-2 border-primary-100 ml-2">
-                      {item.children.map(
-                        (child) => (
-                          <Link
-                            key={child.name}
-                            href={child.href}
-                            className={`block py-2 text-sm font-medium ${
-                              isActive(child.href)
-                                ? "text-primary-600"
-                                : "text-gray-600 hover:text-primary-600"
-                            }`}
-                            onClick={() =>
-                              setMobileMenuOpen(
-                                false
-                              )
-                            }
-                          >
-                            {child.name}
-                          </Link>
-                        )
-                      )}
-                    </div>
+                  {item.hasDropdown ? (
+                    <>
+                      <button
+                        onClick={() =>
+                          setMobileServicesOpen(
+                            !mobileServicesOpen
+                          )
+                        }
+                        className={`flex items-center justify-between w-full py-3 text-base font-semibold ${
+                          isActive(item.href)
+                            ? "text-primary-600"
+                            : "text-gray-800"
+                        }`}
+                      >
+                        {item.name}
+                        <ChevronDown
+                          className={`h-5 w-5 transition-transform duration-200 ${
+                            mobileServicesOpen
+                              ? "rotate-180"
+                              : ""
+                          }`}
+                        />
+                      </button>
+                      {/* Collapsible services list */}
+                      <div
+                        className={`overflow-hidden transition-all duration-300 ${
+                          mobileServicesOpen
+                            ? "max-h-96 opacity-100"
+                            : "max-h-0 opacity-0"
+                        }`}
+                      >
+                        <Link
+                          href="/services"
+                          className="flex items-center gap-2 py-2 px-3 mb-1 text-sm font-semibold text-primary-600 bg-primary-50 rounded-lg"
+                          onClick={() =>
+                            setMobileMenuOpen(
+                              false
+                            )
+                          }
+                        >
+                          <ArrowRight className="h-4 w-4" />
+                          View All Services
+                        </Link>
+                        <div className="space-y-1">
+                          {serviceItems.map(
+                            (service) => (
+                              <Link
+                                key={service.name}
+                                href={
+                                  service.href
+                                }
+                                className={`flex items-center gap-3 py-2.5 px-3 rounded-lg transition-colors ${
+                                  isActive(
+                                    service.href
+                                  )
+                                    ? "bg-primary-50 text-primary-600"
+                                    : "text-gray-600 hover:bg-gray-50"
+                                }`}
+                                onClick={() =>
+                                  setMobileMenuOpen(
+                                    false
+                                  )
+                                }
+                              >
+                                <service.icon className="h-5 w-5 shrink-0" />
+                                <span className="text-sm font-medium">
+                                  {service.name}
+                                </span>
+                              </Link>
+                            )
+                          )}
+                        </div>
+                      </div>
+                    </>
+                  ) : (
+                    <Link
+                      href={item.href}
+                      className={`block py-3 text-base font-semibold ${
+                        isActive(item.href)
+                          ? "text-primary-600"
+                          : "text-gray-800 hover:text-primary-600"
+                      }`}
+                      onClick={() =>
+                        setMobileMenuOpen(false)
+                      }
+                    >
+                      {item.name}
+                    </Link>
                   )}
                 </div>
               ))}
