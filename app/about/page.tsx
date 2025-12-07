@@ -1,4 +1,5 @@
 import { Metadata } from "next";
+import Image from "next/image";
 import SectionHeader from "@/components/ui/SectionHeader";
 import Button from "@/components/ui/Button";
 import PageHero from "@/components/sections/PageHero";
@@ -49,22 +50,22 @@ const team = [
   {
     name: "John Doe",
     role: "Chief Executive Officer",
-    image: null,
+    image: "/images/team/member-1.jpg",
   },
   {
     name: "Jane Smith",
     role: "Chief Operations Officer",
-    image: null,
+    image: "/images/team/member-2.jpg",
   },
   {
     name: "Michael Brown",
     role: "Chief Financial Officer",
-    image: null,
+    image: "/images/team/member-3.jpg",
   },
   {
     name: "Sarah Johnson",
     role: "Chief Technology Officer",
-    image: null,
+    image: "/images/team/member-4.jpg",
   },
 ];
 
@@ -165,8 +166,13 @@ export default function AboutPage() {
                 key={member.name}
                 className="text-center group"
               >
-                <div className="relative mb-6 mx-auto w-40 h-40 rounded-full bg-gradient-to-br from-primary-100 to-primary-200 flex items-center justify-center overflow-hidden">
-                  <Users className="h-16 w-16 text-primary-400" />
+                <div className="relative mb-6 mx-auto w-40 h-40 rounded-full overflow-hidden shadow-lg group-hover:shadow-xl transition-shadow">
+                  <Image
+                    src={member.image}
+                    alt={member.name}
+                    fill
+                    className="object-cover"
+                  />
                 </div>
                 <h3 className="text-lg font-semibold text-gray-900">
                   {member.name}

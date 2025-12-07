@@ -61,6 +61,7 @@ export default function EducationPage() {
       features={features}
       benefits={benefits}
       backgroundImage="/images/pages/education.jpg"
+      serviceImage="/images/services/education.jpg"
     />
   );
 }

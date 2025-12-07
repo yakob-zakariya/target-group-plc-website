@@ -1,6 +1,8 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
+import { usePathname } from "next/navigation";
 import { useState, useEffect } from "react";
 import {
   Menu,
@@ -41,12 +43,19 @@ const navigation = [
 ];
 
 export default function Header() {
+  const pathname = usePathname();
   const [mobileMenuOpen, setMobileMenuOpen] =
     useState(false);
   const [servicesOpen, setServicesOpen] =
     useState(false);
   const [isScrolled, setIsScrolled] =
     useState(false);
+
+  // Check if a nav item is active
+  const isActive = (href: string) => {
+    if (href === "/") return pathname === "/";
+    return pathname.startsWith(href);
+  };
 
   useEffect(() => {
     const handleScroll = () => {
@@ -81,33 +90,15 @@ export default function Header() {
           {/* Logo */}
           <Link
             href="/"
-            className="flex items-center gap-3"
+            className="flex items-center"
           >
-            <div className="h-10 w-10 rounded-lg bg-gradient-to-br from-primary-600 to-primary-800 flex items-center justify-center">
-              <span className="text-white font-bold text-lg">
-                TG
-              </span>
-            </div>
-            <div className="hidden sm:block">
-              <p
-                className={`text-xl font-bold transition-colors ${
-                  isScrolled
-                    ? "text-gray-900"
-                    : "text-white"
-                }`}
-              >
-                Target Group
-              </p>
-              <p
-                className={`text-xs -mt-1 transition-colors ${
-                  isScrolled
-                    ? "text-gray-500"
-                    : "text-gray-300"
-                }`}
-              >
-                PLC
-              </p>
-            </div>
+            <Image
+              src="/images/target-logo-2.jpg"
+              alt="Target Group PLC"
+              width={320}
+              height={20}
+              className="h-20 w-auto object-contain"
+            />
           </Link>
 
           {/* Desktop Navigation */}
@@ -127,7 +118,11 @@ export default function Header() {
                   <Link
                     href={item.href}
                     className={`flex items-center gap-1 text-base font-semibold transition-colors py-2 ${
-                      isScrolled
+                      isActive(item.href)
+                        ? isScrolled
+                          ? "text-primary-600"
+                          : "text-primary-300"
+                        : isScrolled
                         ? "text-gray-800 hover:text-primary-600"
                         : "text-white hover:text-primary-300"
                     }`}
@@ -142,7 +137,11 @@ export default function Header() {
                           <Link
                             key={child.name}
                             href={child.href}
-                            className="block px-4 py-2.5 text-sm font-medium text-gray-700 hover:bg-primary-50 hover:text-primary-600 transition-colors"
+                            className={`block px-4 py-2.5 text-sm font-medium transition-colors ${
+                              isActive(child.href)
+                                ? "bg-primary-50 text-primary-600"
+                                : "text-gray-700 hover:bg-primary-50 hover:text-primary-600"
+                            }`}
                           >
                             {child.name}
                           </Link>
@@ -156,7 +155,11 @@ export default function Header() {
                   key={item.name}
                   href={item.href}
                   className={`text-base font-semibold transition-colors ${
-                    isScrolled
+                    isActive(item.href)
+                      ? isScrolled
+                        ? "text-primary-600"
+                        : "text-primary-300"
+                      : isScrolled
                       ? "text-gray-800 hover:text-primary-600"
                       : "text-white hover:text-primary-300"
                   }`}
@@ -205,7 +208,11 @@ export default function Header() {
                 <div key={item.name}>
                   <Link
                     href={item.href}
-                    className="block py-3 text-base font-semibold text-gray-800 hover:text-primary-600"
+                    className={`block py-3 text-base font-semibold ${
+                      isActive(item.href)
+                        ? "text-primary-600"
+                        : "text-gray-800 hover:text-primary-600"
+                    }`}
                     onClick={() =>
                       setMobileMenuOpen(false)
                     }
@@ -219,7 +226,11 @@ export default function Header() {
                           <Link
                             key={child.name}
                             href={child.href}
-                            className="block py-2 text-sm font-medium text-gray-600 hover:text-primary-600"
+                            className={`block py-2 text-sm font-medium ${
+                              isActive(child.href)
+                                ? "text-primary-600"
+                                : "text-gray-600 hover:text-primary-600"
+                            }`}
                             onClick={() =>
                               setMobileMenuOpen(
                                 false

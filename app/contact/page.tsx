@@ -19,8 +19,8 @@ const contactInfo = [
   {
     icon: MapPin,
     title: "Visit Us",
-    content: "Bole Road, Addis Ababa, Ethiopia",
-    subContent: "Near Bole International Airport",
+    content: "Furi, Sheger City, Ethiopia",
+    subContent: "",
   },
   {
     icon: Phone,
@@ -229,19 +229,19 @@ export default function ContactPage() {
         </div>
       </section>
 
-      {/* Map Placeholder */}
+      {/* Map Section */}
       <section className="h-96 bg-gray-200 relative">
-        <div className="absolute inset-0 flex items-center justify-center">
-          <div className="text-center">
-            <MapPin className="h-12 w-12 text-gray-400 mx-auto mb-4" />
-            <p className="text-gray-500 font-medium">
-              Map Integration Coming Soon
-            </p>
-            <p className="text-gray-400 text-sm">
-              Bole Road, Addis Ababa, Ethiopia
-            </p>
-          </div>
-        </div>
+        <iframe
+          src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d63048.76710988096!2d38.6530!3d8.9500!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x164b9a0b4f3a3d55%3A0x5c3e1b3a99c55a8!2sFuri%2C%20Ethiopia!5e0!3m2!1sen!2sus!4v1702000000000!5m2!1sen!2sus"
+          width="100%"
+          height="100%"
+          style={{ border: 0 }}
+          allowFullScreen
+          loading="lazy"
+          referrerPolicy="no-referrer-when-downgrade"
+          title="Target Group PLC Location - Furi, Sheger City, Ethiopia"
+          className="absolute inset-0"
+        />
       </section>
     </>
   );

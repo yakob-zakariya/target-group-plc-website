@@ -61,6 +61,7 @@ export default function ImportExportPage() {
       features={features}
       benefits={benefits}
       backgroundImage="/images/pages/trade.jpg"
+      serviceImage="/images/services/trade.jpg"
     />
   );
 }

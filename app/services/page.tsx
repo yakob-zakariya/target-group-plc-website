@@ -1,5 +1,6 @@
 import { Metadata } from "next";
 import Link from "next/link";
+import Image from "next/image";
 import SectionHeader from "@/components/ui/SectionHeader";
 import CTASection from "@/components/sections/CTASection";
 import PageHero from "@/components/sections/PageHero";
@@ -27,6 +28,7 @@ const services = [
     icon: Building2,
     href: "/services/construction-materials",
     color: "from-blue-500 to-blue-700",
+    image: "/images/services/construction.jpg",
     features: [
       "Steel & Iron Products",
       "Cement & Concrete",
@@ -41,6 +43,7 @@ const services = [
     icon: Factory,
     href: "/services/agro-industry",
     color: "from-green-500 to-green-700",
+    image: "/images/services/agro.jpg",
     features: [
       "Food Processing",
       "Agricultural Equipment",
@@ -55,6 +58,7 @@ const services = [
     icon: Ship,
     href: "/services/import-export",
     color: "from-amber-500 to-amber-700",
+    image: "/images/services/trade.jpg",
     features: [
       "Customs Clearance",
       "Logistics Support",
@@ -69,6 +73,7 @@ const services = [
     icon: GraduationCap,
     href: "/services/education",
     color: "from-purple-500 to-purple-700",
+    image: "/images/services/education.jpg",
     features: [
       "Vocational Training",
       "Professional Development",
@@ -83,6 +88,7 @@ const services = [
     icon: Monitor,
     href: "/services/it-services",
     color: "from-cyan-500 to-cyan-700",
+    image: "/images/services/it.jpg",
     features: [
       "Software Development",
       "IT Consulting",
@@ -161,10 +167,16 @@ export default function ServicesPage() {
                   }`}
                 >
                   <div
-                    className={`absolute inset-0 bg-gradient-to-r ${service.color} rounded-3xl blur-2xl opacity-20`}
+                    className={`absolute inset-0 bg-linear-to-r ${service.color} rounded-3xl blur-2xl opacity-20`}
                   />
-                  <div className="relative bg-gray-100 rounded-3xl aspect-[4/3] flex items-center justify-center">
-                    <service.icon className="h-24 w-24 text-gray-300" />
+                  <div className="relative rounded-3xl overflow-hidden shadow-xl">
+                    <Image
+                      src={service.image}
+                      alt={service.title}
+                      width={600}
+                      height={450}
+                      className="w-full h-auto object-cover"
+                    />
                   </div>
                 </div>
               </div>

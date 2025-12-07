@@ -61,6 +61,7 @@ export default function ConstructionMaterialsPage() {
       features={features}
       benefits={benefits}
       backgroundImage="/images/pages/construction.jpg"
+      serviceImage="/images/services/construction.jpg"
     />
   );
 }

@@ -61,6 +61,7 @@ export default function ITServicesPage() {
       features={features}
       benefits={benefits}
       backgroundImage="/images/pages/it.jpg"
+      serviceImage="/images/services/it.jpg"
     />
   );
 }

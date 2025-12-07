@@ -1,3 +1,4 @@
+import Image from "next/image";
 import {
   LucideIcon,
   CheckCircle2,
@@ -19,6 +20,7 @@ interface ServicePageTemplateProps {
   }[];
   benefits: string[];
   backgroundImage: string;
+  serviceImage: string;
 }
 
 export default function ServicePageTemplate({
@@ -30,6 +32,7 @@ export default function ServicePageTemplate({
   features,
   benefits,
   backgroundImage,
+  serviceImage,
 }: ServicePageTemplateProps) {
   return (
     <>
@@ -97,12 +100,18 @@ export default function ServicePageTemplate({
                 </Button>
               </div>
             </div>
-            <div className={`relative`}>
+            <div className="relative">
               <div
-                className={`absolute inset-0 bg-gradient-to-r ${color} rounded-3xl blur-2xl opacity-20`}
+                className={`absolute inset-0 bg-linear-to-r ${color} rounded-3xl blur-2xl opacity-20`}
               />
-              <div className="relative bg-gradient-to-br from-gray-100 to-gray-200 rounded-3xl aspect-square flex items-center justify-center">
-                <Icon className="h-32 w-32 text-gray-300" />
+              <div className="relative rounded-3xl overflow-hidden shadow-xl">
+                <Image
+                  src={serviceImage}
+                  alt={title}
+                  width={600}
+                  height={500}
+                  className="w-full h-auto object-cover"
+                />
               </div>
             </div>
           </div>

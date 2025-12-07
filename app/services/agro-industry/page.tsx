@@ -61,6 +61,7 @@ export default function AgroIndustryPage() {
       features={features}
       benefits={benefits}
       backgroundImage="/images/pages/agro.jpg"
+      serviceImage="/images/services/agro.jpg"
     />
   );
 }
