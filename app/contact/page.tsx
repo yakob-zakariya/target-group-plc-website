@@ -8,6 +8,7 @@ import {
 } from "lucide-react";
 import Button from "@/components/ui/Button";
 import PageHero from "@/components/sections/PageHero";
+import PublicLayout from "@/components/layout/PublicLayout";
 
 export const metadata: Metadata = {
   title: "Contact Us",
@@ -44,7 +45,7 @@ const contactInfo = [
 
 export default function ContactPage() {
   return (
-    <>
+    <PublicLayout>
       <PageHero
         title="Contact Us"
         subtitle="Have questions or want to discuss a potential partnership? We're here to help. Reach out to us through any of the channels below."
@@ -243,6 +244,6 @@ export default function ContactPage() {
           className="absolute inset-0"
         />
       </section>
-    </>
+    </PublicLayout>
   );
 }

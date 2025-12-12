@@ -4,16 +4,17 @@ import AboutSection from "@/components/sections/AboutSection";
 import StatsSection from "@/components/sections/StatsSection";
 import TeamSection from "@/components/sections/TeamSection";
 import CTASection from "@/components/sections/CTASection";
+import PublicLayout from "@/components/layout/PublicLayout";
 
 export default function Home() {
   return (
-    <>
+    <PublicLayout>
       <HeroSection />
       <ServicesSection />
       <AboutSection />
       <StatsSection />
       <TeamSection />
       <CTASection />
-    </>
+    </PublicLayout>
   );
 }

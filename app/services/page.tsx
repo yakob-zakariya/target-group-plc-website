@@ -4,6 +4,7 @@ import Image from "next/image";
 import SectionHeader from "@/components/ui/SectionHeader";
 import CTASection from "@/components/sections/CTASection";
 import PageHero from "@/components/sections/PageHero";
+import PublicLayout from "@/components/layout/PublicLayout";
 import {
   Building2,
   Factory,
@@ -100,7 +101,7 @@ const services = [
 
 export default function ServicesPage() {
   return (
-    <>
+    <PublicLayout>
       <PageHero
         title="Our Services"
         subtitle="From construction to technology, we deliver excellence across five strategic sectors, providing integrated solutions for diverse business needs."
@@ -186,6 +187,6 @@ export default function ServicesPage() {
       </section>
 
       <CTASection />
-    </>
+    </PublicLayout>
   );
 }

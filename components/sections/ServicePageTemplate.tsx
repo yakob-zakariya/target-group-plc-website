@@ -7,6 +7,7 @@ import {
 import Button from "@/components/ui/Button";
 import CTASection from "./CTASection";
 import PageHero from "./PageHero";
+import PublicLayout from "@/components/layout/PublicLayout";
 
 interface ServicePageTemplateProps {
   title: string;
@@ -35,7 +36,7 @@ export default function ServicePageTemplate({
   serviceImage,
 }: ServicePageTemplateProps) {
   return (
-    <>
+    <PublicLayout>
       <PageHero
         title={title}
         subtitle={description}
@@ -119,6 +120,6 @@ export default function ServicePageTemplate({
       </section>
 
       <CTASection />
-    </>
+    </PublicLayout>
   );
 }

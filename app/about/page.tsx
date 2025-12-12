@@ -3,6 +3,7 @@ import Image from "next/image";
 import SectionHeader from "@/components/ui/SectionHeader";
 import Button from "@/components/ui/Button";
 import PageHero from "@/components/sections/PageHero";
+import PublicLayout from "@/components/layout/PublicLayout";
 import {
   Target,
   Eye,
@@ -71,7 +72,7 @@ const team = [
 
 export default function AboutPage() {
   return (
-    <>
+    <PublicLayout>
       <PageHero
         title="About Us"
         subtitle="Target Group PLC is a dynamic conglomerate dedicated to creating lasting value across multiple industries while contributing to economic growth and community development."
@@ -212,6 +213,6 @@ export default function AboutPage() {
           </div>
         </div>
       </section>
-    </>
+    </PublicLayout>
   );
 }
