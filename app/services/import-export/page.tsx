@@ -1,6 +1,5 @@
 import { Metadata } from "next";
-import ServicePageTemplate from "@/components/sections/ServicePageTemplate";
-import { Ship } from "lucide-react";
+import DynamicServicePage from "@/components/sections/DynamicServicePage";
 
 export const metadata: Metadata = {
   title: "Import & Export",
@@ -8,7 +7,7 @@ export const metadata: Metadata = {
     "Comprehensive international trade solutions. Customs clearance, logistics support, market research, and trade documentation services.",
 };
 
-const features = [
+const fallbackFeatures = [
   {
     title: "Customs Clearance",
     description:
@@ -41,7 +40,7 @@ const features = [
   },
 ];
 
-const benefits = [
+const fallbackBenefits = [
   "Extensive global network of partners and suppliers",
   "Deep understanding of international trade regulations",
   "Competitive rates for shipping and logistics",
@@ -52,14 +51,13 @@ const benefits = [
 
 export default function ImportExportPage() {
   return (
-    <ServicePageTemplate
-      title="Import & Export"
-      subtitle="Global Trade Solutions"
-      description="We facilitate seamless international trade, connecting Ethiopian markets with global opportunities through our extensive network of partners and deep expertise in cross-border commerce."
-      icon={Ship}
+    <DynamicServicePage
+      slug="import-export"
+      fallbackTitle="Import & Export"
+      fallbackDescription="We facilitate seamless international trade, connecting Ethiopian markets with global opportunities through our extensive network of partners and deep expertise in cross-border commerce."
+      fallbackFeatures={fallbackFeatures}
+      fallbackBenefits={fallbackBenefits}
       color="from-amber-500 to-amber-700"
-      features={features}
-      benefits={benefits}
       backgroundImage="/images/pages/trade.jpg"
       serviceImage="/images/services/trade.jpg"
     />

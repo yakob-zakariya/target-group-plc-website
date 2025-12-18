@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import {
   Mail,
   Phone,
@@ -53,21 +54,20 @@ export default function Footer() {
           <div className="lg:col-span-1">
             <Link
               href="/"
-              className="flex items-center gap-3 mb-6"
+              className="flex items-center mb-6"
             >
-              <div className="h-10 w-10 rounded-lg bg-gradient-to-br from-primary-500 to-primary-700 flex items-center justify-center">
-                <span className="text-white font-bold text-lg">
-                  TG
-                </span>
-              </div>
-              <div>
-                <p className="text-xl font-bold text-white">
-                  Target Group
-                </p>
-                <p className="text-xs text-gray-400 -mt-1">
-                  PLC
-                </p>
-              </div>
+              <Link
+                href="/"
+                className="flex items-center"
+              >
+                <Image
+                  src="/images/target-logo-last.png"
+                  alt="Target Group PLC"
+                  width={180}
+                  height={100}
+                  className="h-48 w-auto object-contain"
+                />
+              </Link>
             </Link>
             <p className="text-sm text-gray-400 mb-6">
               Building tomorrow&apos;s solutions

@@ -9,16 +9,19 @@ import CTASection from "./CTASection";
 import PageHero from "./PageHero";
 import PublicLayout from "@/components/layout/PublicLayout";
 
+interface ServiceFeature {
+  title: string;
+  description: string;
+  image?: string | null;
+}
+
 interface ServicePageTemplateProps {
   title: string;
   subtitle: string;
   description: string;
-  icon: LucideIcon;
+  icon?: LucideIcon;
   color: string;
-  features: {
-    title: string;
-    description: string;
-  }[];
+  features: ServiceFeature[];
   benefits: string[];
   backgroundImage: string;
   serviceImage: string;
@@ -26,9 +29,7 @@ interface ServicePageTemplateProps {
 
 export default function ServicePageTemplate({
   title,
-  subtitle,
   description,
-  icon: Icon,
   color,
   features,
   benefits,
@@ -53,14 +54,26 @@ export default function ServicePageTemplate({
             {features.map((feature) => (
               <div
                 key={feature.title}
-                className="bg-gray-50 rounded-2xl p-8"
+                className="bg-gray-50 rounded-2xl overflow-hidden"
               >
-                <h3 className="text-xl font-semibold text-gray-900 mb-3">
-                  {feature.title}
-                </h3>
-                <p className="text-gray-600">
-                  {feature.description}
-                </p>
+                {feature.image && (
+                  <div className="relative h-48 w-full">
+                    <Image
+                      src={feature.image}
+                      alt={feature.title}
+                      fill
+                      className="object-cover"
+                    />
+                  </div>
+                )}
+                <div className="p-8">
+                  <h3 className="text-xl font-semibold text-gray-900 mb-3">
+                    {feature.title}
+                  </h3>
+                  <p className="text-gray-600">
+                    {feature.description}
+                  </p>
+                </div>
               </div>
             ))}
           </div>

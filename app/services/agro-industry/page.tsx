@@ -1,6 +1,5 @@
 import { Metadata } from "next";
-import ServicePageTemplate from "@/components/sections/ServicePageTemplate";
-import { Factory } from "lucide-react";
+import DynamicServicePage from "@/components/sections/DynamicServicePage";
 
 export const metadata: Metadata = {
   title: "Agro Industry",
@@ -8,7 +7,7 @@ export const metadata: Metadata = {
     "Sustainable agricultural manufacturing and processing solutions. Food processing, agricultural equipment, and supply chain management.",
 };
 
-const features = [
+const fallbackFeatures = [
   {
     title: "Food Processing",
     description:
@@ -41,7 +40,7 @@ const features = [
   },
 ];
 
-const benefits = [
+const fallbackBenefits = [
   "State-of-the-art processing facilities",
   "Sustainable and environmentally friendly practices",
   "Support for local farmers and communities",
@@ -52,14 +51,13 @@ const benefits = [
 
 export default function AgroIndustryPage() {
   return (
-    <ServicePageTemplate
-      title="Agro Industry"
-      subtitle="Sustainable Agriculture"
-      description="Our manufacturing arm focuses on sustainable agricultural processing and production, supporting local farmers while ensuring food security and contributing to the nation's economic growth."
-      icon={Factory}
+    <DynamicServicePage
+      slug="agro-industry"
+      fallbackTitle="Agro Industry"
+      fallbackDescription="Our manufacturing arm focuses on sustainable agricultural processing and production, supporting local farmers while ensuring food security and contributing to the nation's economic growth."
+      fallbackFeatures={fallbackFeatures}
+      fallbackBenefits={fallbackBenefits}
       color="from-green-500 to-green-700"
-      features={features}
-      benefits={benefits}
       backgroundImage="/images/pages/agro.jpg"
       serviceImage="/images/services/agro.jpg"
     />

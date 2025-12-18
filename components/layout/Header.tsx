@@ -18,40 +18,62 @@ import {
   GraduationCap,
   Monitor,
   ArrowRight,
+  Briefcase,
 } from "lucide-react";
 
-const serviceItems = [
+// Map icon names to Lucide icons
+const iconMap: Record<
+  string,
+  React.ComponentType<{ className?: string }>
+> = {
+  Building2,
+  Factory,
+  Ship,
+  GraduationCap,
+  Monitor,
+  Briefcase,
+};
+
+// Fallback services in case API fails
+const fallbackServiceItems = [
   {
     name: "Construction Materials",
     href: "/services/construction-materials",
-    icon: Building2,
+    icon: "Building2",
     description: "Premium building materials",
   },
   {
     name: "Agro Industry",
     href: "/services/agro-industry",
-    icon: Factory,
+    icon: "Factory",
     description: "Agricultural processing",
   },
   {
     name: "Import & Export",
     href: "/services/import-export",
-    icon: Ship,
+    icon: "Ship",
     description: "Global trade solutions",
   },
   {
     name: "Education",
     href: "/services/education",
-    icon: GraduationCap,
+    icon: "GraduationCap",
     description: "Learning & development",
   },
   {
     name: "IT Services",
     href: "/services/it-services",
-    icon: Monitor,
+    icon: "Monitor",
     description: "Digital solutions",
   },
 ];
+
+interface ServiceItem {
+  name: string;
+  href: string;
+  icon: string;
+  description: string;
+}
 
 const navigation = [
   { name: "Home", href: "/" },
@@ -76,6 +98,8 @@ export default function Header() {
   ] = useState(false);
   const [isScrolled, setIsScrolled] =
     useState(false);
+  const [serviceItems, setServiceItems] =
+    useState<ServiceItem[]>(fallbackServiceItems);
   const dropdownTimeout =
     useRef<NodeJS.Timeout | null>(null);
 
@@ -97,6 +121,45 @@ export default function Header() {
       setServicesOpen(false);
     }, 150); // Small delay to prevent accidental closing
   };
+
+  // Fetch services from API
+  useEffect(() => {
+    const fetchServices = async () => {
+      try {
+        const res = await fetch("/api/services");
+        if (res.ok) {
+          const data = await res.json();
+          if (data.length > 0) {
+            const formattedServices = data.map(
+              (service: {
+                name: string;
+                slug: string;
+                description: string;
+                icon: string | null;
+              }) => ({
+                name: service.name,
+                href: `/services/${service.slug}`,
+                icon: service.icon || "Briefcase",
+                description:
+                  service.description?.substring(
+                    0,
+                    30
+                  ) + "..." || "",
+              })
+            );
+            setServiceItems(formattedServices);
+          }
+        }
+      } catch (error) {
+        console.error(
+          "Failed to fetch services:",
+          error
+        );
+        // Keep fallback services
+      }
+    };
+    fetchServices();
+  }, []);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -134,11 +197,11 @@ export default function Header() {
             className="flex items-center"
           >
             <Image
-              src="/images/target-logo-2.jpg"
+              src="/images/target-logo-last.png"
               alt="Target Group PLC"
-              width={320}
-              height={20}
-              className="h-20 w-auto object-contain"
+              width={180}
+              height={100}
+              className="h-48 w-auto object-contain"
             />
           </Link>
 
@@ -215,7 +278,16 @@ export default function Header() {
                                     : "bg-gray-100 text-gray-600"
                                 }`}
                               >
-                                <service.icon className="h-5 w-5" />
+                                {(() => {
+                                  const IconComponent =
+                                    iconMap[
+                                      service.icon
+                                    ] ||
+                                    Briefcase;
+                                  return (
+                                    <IconComponent className="h-5 w-5" />
+                                  );
+                                })()}
                               </div>
                               <div>
                                 <p
@@ -362,7 +434,16 @@ export default function Header() {
                                   )
                                 }
                               >
-                                <service.icon className="h-5 w-5 shrink-0" />
+                                {(() => {
+                                  const IconComponent =
+                                    iconMap[
+                                      service.icon
+                                    ] ||
+                                    Briefcase;
+                                  return (
+                                    <IconComponent className="h-5 w-5 shrink-0" />
+                                  );
+                                })()}
                                 <span className="text-sm font-medium">
                                   {service.name}
                                 </span>

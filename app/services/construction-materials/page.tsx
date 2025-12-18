@@ -1,6 +1,5 @@
 import { Metadata } from "next";
-import ServicePageTemplate from "@/components/sections/ServicePageTemplate";
-import { Building2 } from "lucide-react";
+import DynamicServicePage from "@/components/sections/DynamicServicePage";
 
 export const metadata: Metadata = {
   title: "Construction Materials",
@@ -8,7 +7,7 @@ export const metadata: Metadata = {
     "Premium quality construction materials imported from leading global manufacturers. Steel, cement, hardware, and finishing materials.",
 };
 
-const features = [
+const fallbackFeatures = [
   {
     title: "Steel & Iron Products",
     description:
@@ -41,7 +40,7 @@ const features = [
   },
 ];
 
-const benefits = [
+const fallbackBenefits = [
   "Direct imports from certified international manufacturers",
   "Competitive pricing with bulk order discounts",
   "Quality assurance and product warranties",
@@ -52,14 +51,13 @@ const benefits = [
 
 export default function ConstructionMaterialsPage() {
   return (
-    <ServicePageTemplate
-      title="Construction Materials"
-      subtitle="Building Excellence"
-      description="We import and distribute premium quality construction materials from leading global manufacturers, ensuring your projects are built with the best materials available in the market."
-      icon={Building2}
+    <DynamicServicePage
+      slug="construction-materials"
+      fallbackTitle="Construction Materials"
+      fallbackDescription="We import and distribute premium quality construction materials from leading global manufacturers, ensuring your projects are built with the best materials available in the market."
+      fallbackFeatures={fallbackFeatures}
+      fallbackBenefits={fallbackBenefits}
       color="from-blue-500 to-blue-700"
-      features={features}
-      benefits={benefits}
       backgroundImage="/images/pages/construction.jpg"
       serviceImage="/images/services/construction.jpg"
     />

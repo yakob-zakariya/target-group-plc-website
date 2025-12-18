@@ -1,6 +1,5 @@
 import { Metadata } from "next";
-import ServicePageTemplate from "@/components/sections/ServicePageTemplate";
-import { Monitor } from "lucide-react";
+import DynamicServicePage from "@/components/sections/DynamicServicePage";
 
 export const metadata: Metadata = {
   title: "IT Services",
@@ -8,7 +7,7 @@ export const metadata: Metadata = {
     "Digital transformation and technology solutions. Software development, IT consulting, cloud solutions, and digital marketing.",
 };
 
-const features = [
+const fallbackFeatures = [
   {
     title: "Software Development",
     description:
@@ -41,7 +40,7 @@ const features = [
   },
 ];
 
-const benefits = [
+const fallbackBenefits = [
   "Experienced team of technology professionals",
   "Agile development methodology for faster delivery",
   "Scalable solutions that grow with your business",
@@ -52,14 +51,13 @@ const benefits = [
 
 export default function ITServicesPage() {
   return (
-    <ServicePageTemplate
-      title="IT Services"
-      subtitle="Digital Excellence"
-      description="Digital transformation and technology solutions that help businesses modernize their operations, improve efficiency, and compete effectively in the digital age."
-      icon={Monitor}
+    <DynamicServicePage
+      slug="it-services"
+      fallbackTitle="IT Services"
+      fallbackDescription="Digital transformation and technology solutions that help businesses modernize their operations, improve efficiency, and compete effectively in the digital age."
+      fallbackFeatures={fallbackFeatures}
+      fallbackBenefits={fallbackBenefits}
       color="from-cyan-500 to-cyan-700"
-      features={features}
-      benefits={benefits}
       backgroundImage="/images/pages/it.jpg"
       serviceImage="/images/services/it.jpg"
     />

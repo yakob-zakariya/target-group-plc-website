@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import Link from "next/link";
 import {
   Plus,
   Edit,
@@ -28,10 +29,6 @@ export default function TeamPage() {
     TeamMember[]
   >([]);
   const [loading, setLoading] = useState(true);
-  const [showModal, setShowModal] =
-    useState(false);
-  const [editingMember, setEditingMember] =
-    useState<TeamMember | null>(null);
 
   useEffect(() => {
     fetchMembers();
@@ -110,29 +107,28 @@ export default function TeamPage() {
   }
 
   return (
-    <div>
-      <div className="flex items-center justify-between mb-8">
+    <div className="max-w-full overflow-hidden">
+      {/* Header */}
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-8">
         <div>
-          <h1 className="text-3xl font-bold text-gray-900">
+          <h1 className="text-2xl sm:text-3xl font-bold text-gray-900">
             Team Members
           </h1>
-          <p className="text-gray-600 mt-1">
+          <p className="text-gray-600 mt-1 text-sm sm:text-base">
             Manage your team
           </p>
         </div>
-        <button
-          onClick={() => {
-            setEditingMember(null);
-            setShowModal(true);
-          }}
-          className="flex items-center gap-2 px-4 py-2 bg-primary-600 text-white rounded-lg hover:bg-primary-700 transition-colors"
+        <Link
+          href="/admin/team/new"
+          className="flex items-center justify-center gap-2 px-4 py-2 bg-primary-600 text-white rounded-lg hover:bg-primary-700 transition-colors text-sm sm:text-base w-full sm:w-auto"
         >
           <Plus className="w-5 h-5" />
           Add Member
-        </button>
+        </Link>
       </div>
 
-      <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+      {/* Team Grid */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
         {members.map((member) => (
           <div
             key={member.id}
@@ -186,15 +182,12 @@ export default function TeamPage() {
                   )}
                 </button>
                 <div className="flex gap-1">
-                  <button
-                    onClick={() => {
-                      setEditingMember(member);
-                      setShowModal(true);
-                    }}
+                  <Link
+                    href={`/admin/team/${member.id}/edit`}
                     className="p-2 text-gray-400 hover:text-primary-600 hover:bg-primary-50 rounded-lg transition-colors"
                   >
                     <Edit className="w-4 h-4" />
-                  </button>
+                  </Link>
                   <button
                     onClick={() =>
                       handleDelete(member.id)
@@ -215,264 +208,6 @@ export default function TeamPage() {
           Member&quot; to create one.
         </div>
       )}
-
-      {showModal && (
-        <MemberModal
-          member={editingMember}
-          onClose={() => setShowModal(false)}
-          onSave={() => {
-            setShowModal(false);
-            fetchMembers();
-          }}
-        />
-      )}
-    </div>
-  );
-}
-
-function MemberModal({
-  member,
-  onClose,
-  onSave,
-}: {
-  member: TeamMember | null;
-  onClose: () => void;
-  onSave: () => void;
-}) {
-  const [formData, setFormData] = useState({
-    name: member?.name || "",
-    role: member?.role || "",
-    image: member?.image || "",
-    bio: member?.bio || "",
-    email: member?.email || "",
-    phone: member?.phone || "",
-    linkedin: member?.linkedin || "",
-    order: member?.order || 1,
-    isActive: member?.isActive ?? true,
-  });
-  const [saving, setSaving] = useState(false);
-
-  const handleSubmit = async (
-    e: React.FormEvent
-  ) => {
-    e.preventDefault();
-    setSaving(true);
-
-    try {
-      const url = member
-        ? `/api/admin/team-members/${member.id}`
-        : "/api/admin/team-members";
-      const method = member ? "PATCH" : "POST";
-
-      await fetch(url, {
-        method,
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(formData),
-      });
-
-      onSave();
-    } catch (error) {
-      console.error(
-        "Failed to save member:",
-        error
-      );
-    } finally {
-      setSaving(false);
-    }
-  };
-
-  return (
-    <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
-      <div className="bg-white rounded-2xl w-full max-w-lg max-h-[90vh] overflow-y-auto">
-        <div className="p-6 border-b border-gray-200">
-          <h2 className="text-xl font-bold text-gray-900">
-            {member
-              ? "Edit Team Member"
-              : "Add New Team Member"}
-          </h2>
-        </div>
-        <form
-          onSubmit={handleSubmit}
-          className="p-6 space-y-4"
-        >
-          <div className="grid grid-cols-2 gap-4">
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
-                Name *
-              </label>
-              <input
-                type="text"
-                value={formData.name}
-                onChange={(e) =>
-                  setFormData({
-                    ...formData,
-                    name: e.target.value,
-                  })
-                }
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500"
-                required
-              />
-            </div>
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
-                Role *
-              </label>
-              <input
-                type="text"
-                value={formData.role}
-                onChange={(e) =>
-                  setFormData({
-                    ...formData,
-                    role: e.target.value,
-                  })
-                }
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500"
-                required
-              />
-            </div>
-          </div>
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
-              Image URL
-            </label>
-            <input
-              type="text"
-              value={formData.image}
-              onChange={(e) =>
-                setFormData({
-                  ...formData,
-                  image: e.target.value,
-                })
-              }
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500"
-              placeholder="/images/team/member.jpg"
-            />
-          </div>
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
-              Bio
-            </label>
-            <textarea
-              value={formData.bio}
-              onChange={(e) =>
-                setFormData({
-                  ...formData,
-                  bio: e.target.value,
-                })
-              }
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500"
-              rows={2}
-            />
-          </div>
-          <div className="grid grid-cols-2 gap-4">
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
-                Email
-              </label>
-              <input
-                type="email"
-                value={formData.email}
-                onChange={(e) =>
-                  setFormData({
-                    ...formData,
-                    email: e.target.value,
-                  })
-                }
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500"
-              />
-            </div>
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
-                Phone
-              </label>
-              <input
-                type="text"
-                value={formData.phone}
-                onChange={(e) =>
-                  setFormData({
-                    ...formData,
-                    phone: e.target.value,
-                  })
-                }
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500"
-              />
-            </div>
-          </div>
-          <div className="grid grid-cols-2 gap-4">
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
-                LinkedIn URL
-              </label>
-              <input
-                type="text"
-                value={formData.linkedin}
-                onChange={(e) =>
-                  setFormData({
-                    ...formData,
-                    linkedin: e.target.value,
-                  })
-                }
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500"
-              />
-            </div>
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
-                Order
-              </label>
-              <input
-                type="number"
-                value={formData.order}
-                onChange={(e) =>
-                  setFormData({
-                    ...formData,
-                    order: parseInt(
-                      e.target.value
-                    ),
-                  })
-                }
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500"
-                min={1}
-              />
-            </div>
-          </div>
-          <div className="flex items-center">
-            <label className="flex items-center gap-2 cursor-pointer">
-              <input
-                type="checkbox"
-                checked={formData.isActive}
-                onChange={(e) =>
-                  setFormData({
-                    ...formData,
-                    isActive: e.target.checked,
-                  })
-                }
-                className="w-5 h-5 rounded border-gray-300 text-primary-600 focus:ring-primary-500"
-              />
-              <span className="text-sm font-medium text-gray-700">
-                Active
-              </span>
-            </label>
-          </div>
-          <div className="flex gap-3 pt-4">
-            <button
-              type="button"
-              onClick={onClose}
-              className="flex-1 px-4 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50"
-            >
-              Cancel
-            </button>
-            <button
-              type="submit"
-              disabled={saving}
-              className="flex-1 px-4 py-2 bg-primary-600 text-white rounded-lg hover:bg-primary-700 disabled:opacity-50"
-            >
-              {saving ? "Saving..." : "Save"}
-            </button>
-          </div>
-        </form>
-      </div>
     </div>
   );
 }

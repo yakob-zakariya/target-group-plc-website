@@ -1,6 +1,5 @@
 import { Metadata } from "next";
-import ServicePageTemplate from "@/components/sections/ServicePageTemplate";
-import { GraduationCap } from "lucide-react";
+import DynamicServicePage from "@/components/sections/DynamicServicePage";
 
 export const metadata: Metadata = {
   title: "Education",
@@ -8,7 +7,7 @@ export const metadata: Metadata = {
     "Quality educational programs and institutions. Vocational training, professional development, and scholarship programs.",
 };
 
-const features = [
+const fallbackFeatures = [
   {
     title: "Vocational Training",
     description:
@@ -41,7 +40,7 @@ const features = [
   },
 ];
 
-const benefits = [
+const fallbackBenefits = [
   "Industry-aligned curriculum and programs",
   "Experienced educators and trainers",
   "Modern learning facilities and technology",
@@ -52,14 +51,13 @@ const benefits = [
 
 export default function EducationPage() {
   return (
-    <ServicePageTemplate
-      title="Education"
-      subtitle="Empowering Minds"
-      description="Investing in human capital through quality educational programs and institutions that prepare students for tomorrow's challenges and equip professionals with the skills they need to succeed."
-      icon={GraduationCap}
+    <DynamicServicePage
+      slug="education"
+      fallbackTitle="Education"
+      fallbackDescription="Investing in human capital through quality educational programs and institutions that prepare students for tomorrow's challenges and equip professionals with the skills they need to succeed."
+      fallbackFeatures={fallbackFeatures}
+      fallbackBenefits={fallbackBenefits}
       color="from-purple-500 to-purple-700"
-      features={features}
-      benefits={benefits}
       backgroundImage="/images/pages/education.jpg"
       serviceImage="/images/services/education.jpg"
     />

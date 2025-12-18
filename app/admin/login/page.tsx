@@ -3,7 +3,14 @@
 import { useState } from "react";
 import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
-import { Lock, Mail, AlertCircle } from "lucide-react";
+import Link from "next/link";
+import Image from "next/image";
+
+import {
+  Lock,
+  Mail,
+  AlertCircle,
+} from "lucide-react";
 
 export default function AdminLoginPage() {
   const router = useRouter();
@@ -12,7 +19,9 @@ export default function AdminLoginPage() {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = async (
+    e: React.FormEvent
+  ) => {
     e.preventDefault();
     setError("");
     setLoading(true);
@@ -31,7 +40,9 @@ export default function AdminLoginPage() {
         router.refresh();
       }
     } catch {
-      setError("Something went wrong. Please try again.");
+      setError(
+        "Something went wrong. Please try again."
+      );
     } finally {
       setLoading(false);
     }
@@ -40,28 +51,38 @@ export default function AdminLoginPage() {
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-100 px-4">
       <div className="max-w-md w-full">
-        <div className="bg-white rounded-2xl shadow-xl p-8">
+        <div className="bg-white rounded-2xl shadow-xl p-8 pt-2">
           {/* Header */}
-          <div className="text-center mb-8">
-            <div className="inline-flex items-center justify-center w-16 h-16 bg-primary-100 rounded-full mb-4">
-              <Lock className="w-8 h-8 text-primary-600" />
-            </div>
-            <h1 className="text-2xl font-bold text-gray-900">Admin Login</h1>
-            <p className="text-gray-600 mt-2">
-              Sign in to manage your website
-            </p>
+          <div className="text-center ">
+            <Link
+              href="/"
+              className="flex items-center justify-center"
+            >
+              <Image
+                src="/images/target-logo-last.png"
+                alt="Target Group PLC"
+                width={180}
+                height={80}
+                className="h-48 w-auto object-contain"
+              />
+            </Link>
           </div>
 
           {/* Error Message */}
           {error && (
             <div className="mb-6 p-4 bg-red-50 border border-red-200 rounded-lg flex items-center gap-3 text-red-700">
               <AlertCircle className="w-5 h-5 shrink-0" />
-              <span className="text-sm">{error}</span>
+              <span className="text-sm">
+                {error}
+              </span>
             </div>
           )}
 
           {/* Login Form */}
-          <form onSubmit={handleSubmit} className="space-y-5">
+          <form
+            onSubmit={handleSubmit}
+            className="space-y-5"
+          >
             <div>
               <label
                 htmlFor="email"
@@ -75,7 +96,9 @@ export default function AdminLoginPage() {
                   id="email"
                   type="email"
                   value={email}
-                  onChange={(e) => setEmail(e.target.value)}
+                  onChange={(e) =>
+                    setEmail(e.target.value)
+                  }
                   className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 outline-none transition-colors"
                   placeholder="admin@example.com"
                   required
@@ -96,7 +119,9 @@ export default function AdminLoginPage() {
                   id="password"
                   type="password"
                   value={password}
-                  onChange={(e) => setPassword(e.target.value)}
+                  onChange={(e) =>
+                    setPassword(e.target.value)
+                  }
                   className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-primary-500 outline-none transition-colors"
                   placeholder="••••••••"
                   required
@@ -109,7 +134,9 @@ export default function AdminLoginPage() {
               disabled={loading}
               className="w-full bg-primary-600 text-white py-3 rounded-lg font-semibold hover:bg-primary-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
             >
-              {loading ? "Signing in..." : "Sign In"}
+              {loading
+                ? "Signing in..."
+                : "Sign In"}
             </button>
           </form>
         </div>
@@ -117,4 +144,3 @@ export default function AdminLoginPage() {
     </div>
   );
 }
-

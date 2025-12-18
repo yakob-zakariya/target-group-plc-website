@@ -13,65 +13,56 @@ import {
   ChevronRight,
 } from "lucide-react";
 
-const slides = [
-  {
-    id: 1,
-    image: "/images/hero/slide-1.jpg",
-    title: "Building Tomorrow's",
-    highlight: "Solutions",
-    subtitle: "Today",
-    description:
-      "Target Group PLC is a diversified conglomerate driving innovation across construction, manufacturing, trade, education, and technology sectors.",
-  },
-  {
-    id: 2,
-    image: "/images/hero/slide-2.jpg",
-    title: "Premium",
-    highlight: "Construction",
-    subtitle: "Materials",
-    description:
-      "Importing high-quality construction materials from leading global manufacturers to build lasting structures.",
-  },
-  {
-    id: 3,
-    image: "/images/hero/slide-3.jpg",
-    title: "Sustainable",
-    highlight: "Agriculture",
-    subtitle: "& Manufacturing",
-    description:
-      "Modern agro-industry solutions supporting local farmers and ensuring food security for generations.",
-  },
-  {
-    id: 4,
-    image: "/images/hero/slide-4.jpg",
-    title: "Global",
-    highlight: "Trade",
-    subtitle: "Connections",
-    description:
-      "Facilitating seamless international trade and connecting Ethiopian markets with global opportunities.",
-  },
-  {
-    id: 5,
-    image: "/images/hero/slide-5.jpg",
-    title: "Innovation in",
-    highlight: "Technology",
-    subtitle: "& Education",
-    description:
-      "Empowering businesses and individuals through cutting-edge IT solutions and quality education programs.",
-  },
-];
+interface HeroSlide {
+  id: string;
+  title: string;
+  subtitle: string | null;
+  image: string;
+  buttonText: string | null;
+  buttonLink: string | null;
+  order: number;
+  isActive: boolean;
+}
 
 export default function HeroSection() {
+  const [slides, setSlides] = useState<
+    HeroSlide[]
+  >([]);
   const [currentSlide, setCurrentSlide] =
     useState(0);
   const [isAutoPlaying, setIsAutoPlaying] =
     useState(true);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchSlides = async () => {
+      try {
+        const res = await fetch(
+          "/api/admin/hero-slides"
+        );
+        const data = await res.json();
+        // Only show active slides
+        const activeSlides = data.filter(
+          (s: HeroSlide) => s.isActive
+        );
+        setSlides(activeSlides);
+      } catch (error) {
+        console.error(
+          "Failed to fetch slides:",
+          error
+        );
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchSlides();
+  }, []);
 
   const nextSlide = useCallback(() => {
     setCurrentSlide(
       (prev) => (prev + 1) % slides.length
     );
-  }, []);
+  }, [slides.length]);
 
   const prevSlide = () => {
     setCurrentSlide(
@@ -94,6 +85,17 @@ export default function HeroSection() {
     const interval = setInterval(nextSlide, 6000);
     return () => clearInterval(interval);
   }, [isAutoPlaying, nextSlide]);
+
+  // Show loading skeleton or nothing while loading
+  if (loading || slides.length === 0) {
+    return (
+      <section className="relative h-screen min-h-[600px] max-h-[900px] overflow-hidden bg-gray-900 flex items-center justify-center">
+        <div className="animate-pulse text-white text-xl">
+          Loading...
+        </div>
+      </section>
+    );
+  }
 
   return (
     <section className="relative h-screen min-h-[600px] max-h-[900px] overflow-hidden group">
@@ -136,25 +138,28 @@ export default function HeroSection() {
                 {index === currentSlide && (
                   <>
                     <h1 className="text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-bold text-white leading-tight mb-6">
-                      {slide.title}{" "}
-                      <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary-400 to-primary-300">
-                        {slide.highlight}
-                      </span>{" "}
-                      {slide.subtitle}
+                      {slide.title}
                     </h1>
 
-                    <p className="text-lg sm:text-xl text-gray-300 mb-8 max-w-2xl leading-relaxed">
-                      {slide.description}
-                    </p>
+                    {slide.subtitle && (
+                      <p className="text-lg sm:text-xl text-gray-300 mb-8 max-w-2xl leading-relaxed">
+                        {slide.subtitle}
+                      </p>
+                    )}
 
                     <div className="flex flex-col sm:flex-row gap-4">
-                      <Button
-                        href="/services"
-                        size="lg"
-                      >
-                        Explore Our Services
-                        <ArrowRight className="ml-2 h-5 w-5" />
-                      </Button>
+                      {slide.buttonText &&
+                        slide.buttonLink && (
+                          <Button
+                            href={
+                              slide.buttonLink
+                            }
+                            size="lg"
+                          >
+                            {slide.buttonText}
+                            <ArrowRight className="ml-2 h-5 w-5" />
+                          </Button>
+                        )}
                       <Button
                         href="/about"
                         variant="outline"

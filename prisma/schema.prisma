@@ -36,20 +36,21 @@ model HeroSlide {
 
 // Services offered by the company
 model Service {
-  id          String        @id @default(cuid())
+  id          String           @id @default(cuid())
   name        String
-  slug        String        @unique
+  slug        String           @unique
   description String
   image       String?
-  icon        String?       // Icon name from lucide-react
-  order       Int           @default(0)
-  isActive    Boolean       @default(true)
+  icon        String?          // Icon name from lucide-react
+  order       Int              @default(0)
+  isActive    Boolean          @default(true)
   items       ServiceItem[]
-  createdAt   DateTime      @default(now())
-  updatedAt   DateTime      @updatedAt
+  benefits    ServiceBenefit[]
+  createdAt   DateTime         @default(now())
+  updatedAt   DateTime         @updatedAt
 }
 
-// Individual items within a service
+// Individual items within a service (What We Offer section)
 model ServiceItem {
   id          String   @id @default(cuid())
   name        String
@@ -61,6 +62,18 @@ model ServiceItem {
   serviceId   String
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
+}
+
+// Benefits for a service (Why Choose Us section)
+model ServiceBenefit {
+  id        String   @id @default(cuid())
+  text      String
+  order     Int      @default(0)
+  isActive  Boolean  @default(true)
+  service   Service  @relation(fields: [serviceId], references: [id], onDelete: Cascade)
+  serviceId String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 // Team members
