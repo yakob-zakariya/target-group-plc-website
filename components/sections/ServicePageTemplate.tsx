@@ -17,7 +17,7 @@ interface ServiceFeature {
 
 interface ServicePageTemplateProps {
   title: string;
-  subtitle: string;
+  subtitle?: string;
   description: string;
   icon?: LucideIcon;
   color: string;

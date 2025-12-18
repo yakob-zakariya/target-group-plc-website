@@ -1,11 +1,15 @@
-import { NextRequest, NextResponse } from "next/server";
-import { writeFile, mkdir } from "fs/promises";
-import path from "path";
+import {
+  NextRequest,
+  NextResponse,
+} from "next/server";
+import cloudinary from "@/lib/cloudinary";
 
 export async function POST(request: NextRequest) {
   try {
     const formData = await request.formData();
-    const file = formData.get("file") as File | null;
+    const file = formData.get(
+      "file"
+    ) as File | null;
 
     if (!file) {
       return NextResponse.json(
@@ -15,10 +19,18 @@ export async function POST(request: NextRequest) {
     }
 
     // Validate file type
-    const allowedTypes = ["image/jpeg", "image/png", "image/webp", "image/gif"];
+    const allowedTypes = [
+      "image/jpeg",
+      "image/png",
+      "image/webp",
+      "image/gif",
+    ];
     if (!allowedTypes.includes(file.type)) {
       return NextResponse.json(
-        { error: "Invalid file type. Only JPEG, PNG, WebP, and GIF are allowed." },
+        {
+          error:
+            "Invalid file type. Only JPEG, PNG, WebP, and GIF are allowed.",
+        },
         { status: 400 }
       );
     }
@@ -27,36 +39,30 @@ export async function POST(request: NextRequest) {
     const maxSize = 5 * 1024 * 1024; // 5MB
     if (file.size > maxSize) {
       return NextResponse.json(
-        { error: "File too large. Maximum size is 5MB." },
+        {
+          error:
+            "File too large. Maximum size is 5MB.",
+        },
         { status: 400 }
       );
     }
 
-    // Create unique filename
+    // Convert file to base64 for Cloudinary upload
     const bytes = await file.arrayBuffer();
     const buffer = Buffer.from(bytes);
+    const base64 = buffer.toString("base64");
+    const dataUri = `data:${file.type};base64,${base64}`;
 
-    // Generate unique filename with timestamp
-    const timestamp = Date.now();
-    const originalName = file.name.replace(/[^a-zA-Z0-9.-]/g, "_");
-    const extension = path.extname(originalName);
-    const baseName = path.basename(originalName, extension);
-    const fileName = `${baseName}-${timestamp}${extension}`;
-
-    // Ensure uploads directory exists
-    const uploadDir = path.join(process.cwd(), "public", "uploads");
-    await mkdir(uploadDir, { recursive: true });
-
-    // Save file
-    const filePath = path.join(uploadDir, fileName);
-    await writeFile(filePath, buffer);
-
-    // Return the public URL
-    const publicUrl = `/uploads/${fileName}`;
+    // Upload to Cloudinary
+    const result =
+      await cloudinary.uploader.upload(dataUri, {
+        folder: "target-group", // Organize uploads in a folder
+        resource_type: "image",
+      });
 
     return NextResponse.json({
-      url: publicUrl,
-      fileName: fileName,
+      url: result.secure_url,
+      fileName: result.public_id,
     });
   } catch (error) {
     console.error("Upload error:", error);
@@ -66,4 +72,3 @@ export async function POST(request: NextRequest) {
     );
   }
 }
-
