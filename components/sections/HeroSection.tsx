@@ -7,6 +7,7 @@ import {
 } from "react";
 import Image from "next/image";
 import Button from "@/components/ui/Button";
+import LoadingSpinner from "@/components/ui/LoadingSpinner";
 import {
   ArrowRight,
   ChevronLeft,
@@ -86,13 +87,14 @@ export default function HeroSection() {
     return () => clearInterval(interval);
   }, [isAutoPlaying, nextSlide]);
 
-  // Show loading skeleton or nothing while loading
+  // Show loading spinner while loading
   if (loading || slides.length === 0) {
     return (
       <section className="relative h-screen min-h-[600px] max-h-[900px] overflow-hidden bg-gray-900 flex items-center justify-center">
-        <div className="animate-pulse text-white text-xl">
-          Loading...
-        </div>
+        <LoadingSpinner
+          size="lg"
+          text="Loading..."
+        />
       </section>
     );
   }

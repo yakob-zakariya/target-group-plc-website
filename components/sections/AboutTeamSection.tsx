@@ -1,7 +1,6 @@
 import Image from "next/image";
 import SectionHeader from "@/components/ui/SectionHeader";
-import Button from "@/components/ui/Button";
-import { ArrowRight, User } from "lucide-react";
+import { User } from "lucide-react";
 import prisma from "@/lib/db";
 
 interface TeamMember {
@@ -9,43 +8,38 @@ interface TeamMember {
   name: string;
   role: string;
   image: string | null;
+  bio: string | null;
 }
 
-async function getTeamMembers(): Promise<
-  TeamMember[]
-> {
+async function getAllTeamMembers(): Promise<TeamMember[]> {
   try {
-    const members =
-      await prisma.teamMember.findMany({
-        where: { isActive: true },
-        orderBy: { order: "asc" },
-        take: 4, // Only show 4 members on home page
-        select: {
-          id: true,
-          name: true,
-          role: true,
-          image: true,
-        },
-      });
+    const members = await prisma.teamMember.findMany({
+      where: { isActive: true },
+      orderBy: { order: "asc" },
+      select: {
+        id: true,
+        name: true,
+        role: true,
+        image: true,
+        bio: true,
+      },
+    });
     return members;
   } catch (error) {
-    console.error(
-      "Failed to fetch team members:",
-      error
-    );
+    console.error("Failed to fetch team members:", error);
     return [];
   }
 }
 
-export default async function TeamSection() {
-  const team = await getTeamMembers();
+export default async function AboutTeamSection() {
+  const team = await getAllTeamMembers();
 
   if (team.length === 0) {
-    return null; // Don't show section if no team members
+    return null;
   }
 
   return (
-    <section className="py-20 bg-white">
+    <section id="team" className="py-20 bg-white">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <SectionHeader
           label="Leadership"
@@ -54,10 +48,7 @@ export default async function TeamSection() {
         />
         <div className="mt-16 grid sm:grid-cols-2 lg:grid-cols-4 gap-8">
           {team.map((member) => (
-            <div
-              key={member.id}
-              className="text-center group"
-            >
+            <div key={member.id} className="text-center group">
               <div className="relative mb-6 mx-auto w-40 h-40 rounded-full overflow-hidden shadow-lg group-hover:shadow-xl transition-shadow bg-gray-100">
                 {member.image ? (
                   <Image
@@ -75,22 +66,17 @@ export default async function TeamSection() {
               <h3 className="text-lg font-semibold text-gray-900">
                 {member.name}
               </h3>
-              <p className="text-primary-600">
-                {member.role}
-              </p>
+              <p className="text-primary-600">{member.role}</p>
+              {member.bio && (
+                <p className="mt-2 text-sm text-gray-600 line-clamp-2">
+                  {member.bio}
+                </p>
+              )}
             </div>
           ))}
-        </div>
-        <div className="mt-12 text-center">
-          <Button
-            href="/about#team"
-            variant="outline"
-          >
-            Learn More About Our Team{" "}
-            <ArrowRight className="ml-2 h-4 w-4" />
-          </Button>
         </div>
       </div>
     </section>
   );
 }
+

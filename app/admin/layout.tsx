@@ -17,8 +17,10 @@ import {
   LogOut,
   Menu,
   X,
+  MessageSquare,
 } from "lucide-react";
 import { useState } from "react";
+import LoadingSpinner from "@/components/ui/LoadingSpinner";
 
 const sidebarLinks = [
   {
@@ -40,6 +42,11 @@ const sidebarLinks = [
     name: "Team Members",
     href: "/admin/team",
     icon: Users,
+  },
+  {
+    name: "Messages",
+    href: "/admin/messages",
+    icon: MessageSquare,
   },
 ];
 
@@ -69,9 +76,10 @@ export default function AdminLayout({
   // Show loading state
   if (status === "loading") {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gray-100">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary-600"></div>
-      </div>
+      <LoadingSpinner
+        fullScreen
+        text="Loading..."
+      />
     );
   }
 

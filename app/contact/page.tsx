@@ -4,11 +4,10 @@ import {
   Phone,
   MapPin,
   Clock,
-  Send,
 } from "lucide-react";
-import Button from "@/components/ui/Button";
 import PageHero from "@/components/sections/PageHero";
 import PublicLayout from "@/components/layout/PublicLayout";
+import ContactForm from "@/components/forms/ContactForm";
 
 export const metadata: Metadata = {
   title: "Contact Us",
@@ -88,143 +87,7 @@ export default function ContactPage() {
 
             {/* Contact Form */}
             <div className="lg:col-span-2">
-              <div className="bg-gray-50 rounded-3xl p-8 sm:p-12">
-                <h2 className="text-2xl font-bold text-gray-900 mb-2">
-                  Send Us a Message
-                </h2>
-                <p className="text-gray-600 mb-8">
-                  Fill out the form below and
-                  we&apos;ll get back to you as
-                  soon as possible.
-                </p>
-                <form className="space-y-6">
-                  <div className="grid sm:grid-cols-2 gap-6">
-                    <div>
-                      <label
-                        htmlFor="firstName"
-                        className="block text-sm font-medium text-gray-700 mb-2"
-                      >
-                        First Name
-                      </label>
-                      <input
-                        type="text"
-                        id="firstName"
-                        name="firstName"
-                        className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-primary-500 focus:ring-2 focus:ring-primary-500/20 outline-none transition-all"
-                        placeholder="John"
-                      />
-                    </div>
-                    <div>
-                      <label
-                        htmlFor="lastName"
-                        className="block text-sm font-medium text-gray-700 mb-2"
-                      >
-                        Last Name
-                      </label>
-                      <input
-                        type="text"
-                        id="lastName"
-                        name="lastName"
-                        className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-primary-500 focus:ring-2 focus:ring-primary-500/20 outline-none transition-all"
-                        placeholder="Doe"
-                      />
-                    </div>
-                  </div>
-                  <div className="grid sm:grid-cols-2 gap-6">
-                    <div>
-                      <label
-                        htmlFor="email"
-                        className="block text-sm font-medium text-gray-700 mb-2"
-                      >
-                        Email
-                      </label>
-                      <input
-                        type="email"
-                        id="email"
-                        name="email"
-                        className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-primary-500 focus:ring-2 focus:ring-primary-500/20 outline-none transition-all"
-                        placeholder="john@example.com"
-                      />
-                    </div>
-                    <div>
-                      <label
-                        htmlFor="phone"
-                        className="block text-sm font-medium text-gray-700 mb-2"
-                      >
-                        Phone
-                      </label>
-                      <input
-                        type="tel"
-                        id="phone"
-                        name="phone"
-                        className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-primary-500 focus:ring-2 focus:ring-primary-500/20 outline-none transition-all"
-                        placeholder="+251 91 234 5678"
-                      />
-                    </div>
-                  </div>
-                  <div>
-                    <label
-                      htmlFor="subject"
-                      className="block text-sm font-medium text-gray-700 mb-2"
-                    >
-                      Subject
-                    </label>
-                    <select
-                      id="subject"
-                      name="subject"
-                      className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-primary-500 focus:ring-2 focus:ring-primary-500/20 outline-none transition-all bg-white"
-                    >
-                      <option value="">
-                        Select a subject
-                      </option>
-                      <option value="construction">
-                        Construction Materials
-                      </option>
-                      <option value="agro">
-                        Agro Industry
-                      </option>
-                      <option value="trade">
-                        Import & Export
-                      </option>
-                      <option value="education">
-                        Education
-                      </option>
-                      <option value="it">
-                        IT Services
-                      </option>
-                      <option value="partnership">
-                        Partnership Inquiry
-                      </option>
-                      <option value="other">
-                        Other
-                      </option>
-                    </select>
-                  </div>
-                  <div>
-                    <label
-                      htmlFor="message"
-                      className="block text-sm font-medium text-gray-700 mb-2"
-                    >
-                      Message
-                    </label>
-                    <textarea
-                      id="message"
-                      name="message"
-                      rows={5}
-                      className="w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-primary-500 focus:ring-2 focus:ring-primary-500/20 outline-none transition-all resize-none"
-                      placeholder="How can we help you?"
-                    />
-                  </div>
-                  <Button
-                    type="submit"
-                    size="lg"
-                    className="w-full sm:w-auto"
-                  >
-                    <Send className="mr-2 h-5 w-5" />{" "}
-                    Send Message
-                  </Button>
-                </form>
-              </div>
+              <ContactForm />
             </div>
           </div>
         </div>
