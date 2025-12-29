@@ -159,6 +159,7 @@ export default function DynamicServicePage({
   return (
     <ServicePageTemplate
       title={service.name}
+      slug={service.slug}
       description={service.description}
       color={color}
       features={features}

@@ -12,7 +12,21 @@ import ContactForm from "@/components/forms/ContactForm";
 export const metadata: Metadata = {
   title: "Contact Us",
   description:
-    "Get in touch with Target Group PLC. We're here to answer your questions and discuss partnership opportunities.",
+    "Get in touch with Target Group PLC in Addis Ababa, Ethiopia. Contact us for inquiries, partnerships, and business opportunities.",
+  keywords: [
+    "contact Target Group PLC",
+    "Target Group Ethiopia contact",
+    "business inquiries Ethiopia",
+    "Addis Ababa business",
+    "Ethiopian company contact",
+  ],
+  openGraph: {
+    title: "Contact Target Group PLC",
+    description:
+      "Reach out to discuss partnerships, inquiries, or learn more about our services in Ethiopia.",
+    url: "/contact",
+    type: "website",
+  },
 };
 
 const contactInfo = [

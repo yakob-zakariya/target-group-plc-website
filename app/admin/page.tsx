@@ -1,13 +1,28 @@
-import { Images, Briefcase, Users, Eye } from "lucide-react";
+import {
+  Images,
+  Briefcase,
+  Users,
+  Eye,
+} from "lucide-react";
 import Link from "next/link";
 import prisma from "@/lib/db";
 
+// Force dynamic rendering - admin pages need fresh data
+export const dynamic = "force-dynamic";
+
 async function getStats() {
-  const [heroSlides, services, teamMembers] = await Promise.all([
-    prisma.heroSlide.count({ where: { isActive: true } }),
-    prisma.service.count({ where: { isActive: true } }),
-    prisma.teamMember.count({ where: { isActive: true } }),
-  ]);
+  const [heroSlides, services, teamMembers] =
+    await Promise.all([
+      prisma.heroSlide.count({
+        where: { isActive: true },
+      }),
+      prisma.service.count({
+        where: { isActive: true },
+      }),
+      prisma.teamMember.count({
+        where: { isActive: true },
+      }),
+    ]);
 
   return { heroSlides, services, teamMembers };
 }
@@ -42,7 +57,9 @@ export default async function AdminDashboard() {
   return (
     <div>
       <div className="mb-8">
-        <h1 className="text-3xl font-bold text-gray-900">Dashboard</h1>
+        <h1 className="text-3xl font-bold text-gray-900">
+          Dashboard
+        </h1>
         <p className="text-gray-600 mt-2">
           Welcome to the Target Group admin panel
         </p>
@@ -58,7 +75,9 @@ export default async function AdminDashboard() {
           >
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm text-gray-600">{card.title}</p>
+                <p className="text-sm text-gray-600">
+                  {card.title}
+                </p>
                 <p className="text-3xl font-bold text-gray-900 mt-1">
                   {card.count}
                 </p>
@@ -95,4 +114,3 @@ export default async function AdminDashboard() {
     </div>
   );
 }
-

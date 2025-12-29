@@ -3,6 +3,7 @@ import SectionHeader from "@/components/ui/SectionHeader";
 import Button from "@/components/ui/Button";
 import { ArrowRight, User } from "lucide-react";
 import prisma from "@/lib/db";
+import { unstable_noStore as noStore } from "next/cache";
 
 interface TeamMember {
   id: string;
@@ -14,6 +15,9 @@ interface TeamMember {
 async function getTeamMembers(): Promise<
   TeamMember[]
 > {
+  // Disable caching - always fetch fresh data
+  noStore();
+
   try {
     const members =
       await prisma.teamMember.findMany({

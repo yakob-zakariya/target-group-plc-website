@@ -8,6 +8,10 @@ import Button from "@/components/ui/Button";
 import CTASection from "./CTASection";
 import PageHero from "./PageHero";
 import PublicLayout from "@/components/layout/PublicLayout";
+import {
+  ServiceJsonLd,
+  BreadcrumbJsonLd,
+} from "@/components/seo/JsonLd";
 
 interface ServiceFeature {
   title: string;
@@ -17,6 +21,7 @@ interface ServiceFeature {
 
 interface ServicePageTemplateProps {
   title: string;
+  slug?: string;
   subtitle?: string;
   description: string;
   icon?: LucideIcon;
@@ -29,6 +34,7 @@ interface ServicePageTemplateProps {
 
 export default function ServicePageTemplate({
   title,
+  slug,
   description,
   color,
   features,
@@ -36,8 +42,27 @@ export default function ServicePageTemplate({
   backgroundImage,
   serviceImage,
 }: ServicePageTemplateProps) {
+  const serviceUrl = slug
+    ? `/services/${slug}`
+    : "/services";
+
   return (
     <PublicLayout>
+      {/* Structured Data for SEO */}
+      <ServiceJsonLd
+        name={title}
+        description={description}
+        image={serviceImage}
+        url={serviceUrl}
+      />
+      <BreadcrumbJsonLd
+        items={[
+          { name: "Home", url: "/" },
+          { name: "Services", url: "/services" },
+          { name: title, url: serviceUrl },
+        ]}
+      />
+
       <PageHero
         title={title}
         subtitle={description}

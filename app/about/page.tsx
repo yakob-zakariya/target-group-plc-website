@@ -16,7 +16,22 @@ import {
 export const metadata: Metadata = {
   title: "About Us",
   description:
-    "Learn about Target Group PLC - our mission, vision, values, and the team driving our success across multiple industries.",
+    "Learn about Target Group PLC - our mission, vision, values, and the leadership team driving our success across multiple industries in Ethiopia.",
+  keywords: [
+    "about Target Group PLC",
+    "Ethiopian company",
+    "company mission",
+    "company vision",
+    "leadership team",
+    "Ethiopian conglomerate",
+  ],
+  openGraph: {
+    title: "About Target Group PLC",
+    description:
+      "Discover our mission, vision, and the experienced team leading Target Group PLC towards excellence in Ethiopia.",
+    url: "/about",
+    type: "website",
+  },
 };
 
 const values = [

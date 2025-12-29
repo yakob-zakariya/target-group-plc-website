@@ -18,7 +18,22 @@ import {
 export const metadata: Metadata = {
   title: "Our Services",
   description:
-    "Explore Target Group PLC's comprehensive services across construction materials, agro-industry, import/export, education, and IT.",
+    "Explore Target Group PLC's comprehensive services across construction materials, agro-industry, import/export, education, and IT services in Ethiopia.",
+  keywords: [
+    "Target Group services",
+    "construction materials Ethiopia",
+    "agro-industry Ethiopia",
+    "import export services",
+    "education services Ethiopia",
+    "IT services Addis Ababa",
+  ],
+  openGraph: {
+    title: "Our Services - Target Group PLC",
+    description:
+      "Comprehensive business solutions in construction, manufacturing, trade, education, and technology.",
+    url: "/services",
+    type: "website",
+  },
 };
 
 const services = [
